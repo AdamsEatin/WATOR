@@ -49,9 +49,9 @@ void Ocean::wrap_ocean(int pos_x, int pos_y, int *pos_a, int *pos_b, int *pos_c,
 }
 
 //Displaying Animals
-// ~ : Denotes an empty area of ocean
+// . : Denotes an empty area of ocean
 // F : Denotes a fish
-// 0 : Denotes a shark
+// S : Denotes a shark
 char Ocean::show_animal() {
 	if (type == 0) {
 		return '.';
