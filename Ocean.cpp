@@ -3,14 +3,6 @@
 */
 #include "Ocean.h"
 
-Ocean::Ocean() {
-
-}
-
-Ocean::~Ocean() {
-
-}
-
 //Creating an animal at the provided location
 //and setting it's associated properties
 void Ocean::create_animal(int t, int x, int y) {
