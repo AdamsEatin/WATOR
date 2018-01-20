@@ -1,23 +1,25 @@
 /*
 Authors: Adam Eaton, Yongmin Park
+
+TODO;
+-Implement Timing
+-Use 2D vector instead of Array to alow for user input for rows, columns
 */
 
-//TODO : Implement timing
-//TODO : Implement Vectors instead of 2d array so that you can take user input
-
 #include "Ocean.h"
-#include <omp.h>
 
+#include <omp.h>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <cstdlib>
 
 
 using namespace std;
 
-//Setting default variables, create both the ocean map
-int const rows = 14;
-int const columns = 32;
+//Setting world variables, creating the map
+int const rows = 15;
+int const columns = 30;
 
 Ocean ocean_map[rows][columns];
 
@@ -33,7 +35,6 @@ int turns = 0;
 int max_turns = 500;
 
 void generate_maps() {
-#pragma omp parallel for
 	for (int x = 0; x < rows; x++) {
 		for (int y = 0; y < columns; y++) {
 			ocean_map[x][y].create_animal(0, x, y);
@@ -49,7 +50,6 @@ void populate_ocean() {
 	int a = 0;
 
 	while (total_sharks != starting_sharks && total_fish != starting_fish) {
-#pragma omp parallel for
 		for (int x = 0; x < rows; x++) {
 			for (int y = 0; y < columns; y++) {
 				int animal_code = rand() % 3;
@@ -121,22 +121,23 @@ void display_results() {
 bool get_input() {
 	int max_count = rows * columns;
 
-	cout << "Welcome to WATOR ! \nPlease enter the requested information below\n";
-	cout << "**********************************************";
+	cout << "Welcome to the WATOR Simulation!" << endl;
+	cout << "Please keep the sum of animals below: " << max_count << endl;
+	cout << "\n**********************************************" << endl;
 	
-	cout << "\nStarting number of Fish: ";
+	cout << "\nStarting Fish: ";
 	cin >> starting_fish;
 
-	cout << "\nHow often the Fish can breed: ";
+	cout << "\nHow often Fish can breed: ";
 	cin >> fish_breed;
 
-	cout << "\nStarting number of Sharks: ";
+	cout << "\nStarting Sharks: ";
 	cin >> starting_sharks;
 	
-	cout << "\nHow often the Sharks can breed: ";
+	cout << "\nHow often Sharks can breed: ";
 	cin >> shark_breed;
 
-	cout << "\nHow long a Shark can go without food: ";
+	cout << "\nHow long a Shark can survive without food: ";
 	cin >> shark_starve;
 
 	/* Commented out as they are required to be constants. Need to change to a 2D Vector.
@@ -162,7 +163,7 @@ void fish_move(int x, int y) {
 	int pos_c = 0;
 	int pos_d = 0;
 
-	ocean_map[x][y].wrap_ocean(x, y, &pos_a, &pos_b, &pos_c, &pos_d, rows, columns);
+	ocean_map[x][y].wrap_ocean(x, y, pos_a, pos_b, pos_c, pos_d, rows, columns);
 
 	Ocean temp[8] = { ocean_map[x][pos_d], ocean_map[pos_c][pos_d],
 		ocean_map[pos_c][y], ocean_map[pos_c][pos_b],
@@ -227,7 +228,7 @@ void shark_move(int x, int y) {
 	int pos_c = 0;
 	int pos_d = 0;
 
-	ocean_map[x][y].wrap_ocean(x, y, &pos_a, &pos_b, &pos_c, &pos_d, rows, columns);
+	ocean_map[x][y].wrap_ocean(x, y, pos_a, pos_b, pos_c, pos_d, rows, columns);
 
 	Ocean temp[8] = { ocean_map[x][pos_d], ocean_map[pos_c][pos_d],
 		ocean_map[pos_c][y], ocean_map[pos_c][pos_b],
@@ -332,7 +333,6 @@ void shark_move(int x, int y) {
 
 
 void view_map() {
-#pragma omp parallel for
 	for (int x = 0; x < rows; x++) {
 		for (int y = 0; y < columns; y++) {
 			if (ocean_map[x][y].type == 1 && ocean_map[x][y].moved == 0) {
@@ -344,7 +344,6 @@ void view_map() {
 		}
 	}
 	turns++;
-#pragma omp parallel for
 	for (int a = 0; a < rows; a++) {
 		for (int b = 0; b < columns; b++) {
 			if (ocean_map[a][b].type == 1) {
@@ -364,29 +363,25 @@ int main()
 
 	if (correct_input == true) {
 		generate_maps();
-
 		populate_ocean();
-
 		display_map();
-		system("CLS");
+		system("clear");
 
 		bool running = true;
 
 		while (running == true && turns < max_turns) {
 			view_map();
 			running = display_map();
-			system("CLS");
+			system("clear");
 		}
 
 		display_results();
-		system("PAUSE");
 		
 	}
 	else {
 		int max_possible = rows * columns;
-		cout << "The total amount of animals entered is too much." << endl;
-		cout << "The maximum number possible with your entry is is: " << max_possible << endl;
-		system("PAUSE");
+		cout << "*** INPUT ERROR ***" << endl;
+		cout << "Maximum number of animals was exceeded. Please try again." << endl;
 	}
 	
 	return 0;

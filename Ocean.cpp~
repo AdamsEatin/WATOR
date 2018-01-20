@@ -1,6 +1,10 @@
 /*
 	Authors: Adam Eaton, Yongmin Park
 */
+#include "stdafx.h"
+//remove when moving to Ubuntu
+
+
 #include "Ocean.h"
 
 Ocean::Ocean() {
@@ -27,24 +31,24 @@ void Ocean::create_animal(int t, int x, int y) {
 //In the event that a fish or shark reaches the edge of the world
 //their position is moved to the opposed side, effectively wrapping
 //the game world to one continious area.
-void Ocean::wrap_ocean(int pos_x, int pos_y, int pos_a, int pos_b, int pos_c, int pos_d, int rows, int columns) {
-	pos_a = pos_x - 1;
-	pos_b = pos_y - 1;
-	pos_c = pos_x + 1;
-	pos_d = pos_y + 1;
+void Ocean::wrap_ocean(int pos_x, int pos_y, int *pos_a, int *pos_b, int *pos_c, int *pos_d, int rows, int columns) {
+	*pos_a = pos_x - 1;
+	*pos_b = pos_y - 1;
+	*pos_c = pos_x + 1;
+	*pos_d = pos_y + 1;
 
-	if (pos_a < 0) {
-		pos_a = rows - 1;
+	if (*pos_a < 0) {
+		*pos_a = rows - 1;
 	}
-	if (pos_b < 0) {
-		pos_b = columns - 1;
+	if (*pos_b < 0) {
+		*pos_b = columns - 1;
 	}
 
-	if (pos_a > rows - 1) {
-		pos_a = 0;
+	if (*pos_a > rows - 1) {
+		*pos_a = 0;
 	}
-	if (pos_b > columns - 1) {
-		pos_b = 0;
+	if (*pos_b > columns - 1) {
+		*pos_b = 0;
 	}
 }
 
