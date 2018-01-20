@@ -11,8 +11,6 @@ public:
 	int moved;
 	int turn;
 
-	Ocean();
-	~Ocean();
 	void create_animal(int t, int x, int y);
 	void wrap_ocean(int pos_x, int pos_y, int pos_a, int pos_b, int pos_c, int pos_d, int rows, int columns);
 	char show_animal();

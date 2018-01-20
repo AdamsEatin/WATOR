@@ -3,14 +3,6 @@
 */
 #include "Ocean.h"
 
-Ocean::Ocean() {
-
-}
-
-Ocean::~Ocean() {
-
-}
-
 //Creating an animal at the provided location
 //and setting it's associated properties
 void Ocean::create_animal(int t, int x, int y) {
@@ -49,9 +41,9 @@ void Ocean::wrap_ocean(int pos_x, int pos_y, int pos_a, int pos_b, int pos_c, in
 }
 
 //Displaying Animals
-// ~ : Denotes an empty area of ocean
+// . : Denotes an empty area of ocean
 // F : Denotes a fish
-// 0 : Denotes a shark
+// S : Denotes a shark
 char Ocean::show_animal() {
 	if (type == 0) {
 		return '.';
